@@ -9,6 +9,9 @@ public class PlayerHealth : MonoBehaviour
     public int maxHealth = 3;
     public int currentHealth;
     public Text healthText;
+    public bool isInvulnerable = false;
+
+    private float invulnerabilityDuration = 2.0f;
 
     void Start()
     {
@@ -18,12 +21,17 @@ public class PlayerHealth : MonoBehaviour
 
     public void TakeDamage(int damage)
     {
-        currentHealth -= damage;
-        UpdateHealthText();
-
-        if (currentHealth <= 0)
+        if (!isInvulnerable)
         {
-            RestartGame();
+            currentHealth -= damage;
+            UpdateHealthText();
+            isInvulnerable = true;
+            StartCoroutine(DisableInvulnerability());
+
+            if (currentHealth <= 0)
+            {
+                RestartGame();
+            }
         }
     }
 
@@ -37,5 +45,11 @@ public class PlayerHealth : MonoBehaviour
     void UpdateHealthText()
     {
         healthText.text = "Health: " + currentHealth;
+    }
+
+    private IEnumerator DisableInvulnerability()
+    {
+        yield return new WaitForSeconds(invulnerabilityDuration);
+        isInvulnerable = false;
     }
 }
