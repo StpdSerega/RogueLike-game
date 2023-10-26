@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ActiveTrapDamage : MonoBehaviour
+public class ActiveTrap : MonoBehaviour
 {
     private bool activated = true; 
     public int damage = 1; 
@@ -12,7 +12,7 @@ public class ActiveTrapDamage : MonoBehaviour
         if (activated && other.CompareTag("Player"))
         {
             PlayerHealth playerHealth = other.GetComponent<PlayerHealth>();
-            if (playerHealth != null)
+            if (playerHealth != null && !playerHealth.isInvulnerable)
             {
                 playerHealth.TakeDamage(damage);
                 activated = false;
