@@ -32,6 +32,13 @@ public class PlayerHealth : MonoBehaviour
             {
                 RestartGame();
             }
+
+            Rigidbody2D rb = GetComponent<Rigidbody2D>();
+            if (rb != null)
+            {
+                Vector2 jumpForce = new Vector2(0f, 10f);
+                rb.AddForce(jumpForce, ForceMode2D.Impulse);
+            }
         }
     }
 
