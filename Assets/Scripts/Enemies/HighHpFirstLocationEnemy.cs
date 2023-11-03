@@ -69,7 +69,6 @@ public class HighHpFirstLocationEnemy : MonoBehaviour
 
     void Die()
     {
-        // Handle death logic (play death animation, drop items, etc.)
         Destroy(gameObject);
     }
 

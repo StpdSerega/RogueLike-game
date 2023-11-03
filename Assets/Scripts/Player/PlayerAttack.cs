@@ -47,4 +47,9 @@ public class PlayerAttack : MonoBehaviour
         Vector2 attackPosition = (Vector2)transform.position + lastMoveDirection * attackRange;
         Gizmos.DrawWireSphere(attackPosition, attackRange);
     }
+
+    public void IncreaseAttack(int amount)
+    {
+        attackDamage += amount;
+    }
 }
