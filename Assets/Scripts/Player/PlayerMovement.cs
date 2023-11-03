@@ -83,5 +83,11 @@ public class PlayerMovement : MonoBehaviour
         rb.velocity = Vector2.zero;
         isDashing = false;
     }
+
+    public void IncreaseSpeed(float amount)
+    {
+        moveSpeed += amount;
+    }
+
 }
 

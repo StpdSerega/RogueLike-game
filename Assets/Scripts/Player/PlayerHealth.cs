@@ -59,4 +59,11 @@ public class PlayerHealth : MonoBehaviour
         yield return new WaitForSeconds(invulnerabilityDuration);
         isInvulnerable = false;
     }
+
+    public void IncreaseHealth(int bonus)
+    {
+        currentHealth += bonus;
+        UpdateHealthText();
+    }
+
 }
