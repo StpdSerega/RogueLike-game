@@ -14,7 +14,6 @@ public class HighHpFirstLocationEnemy : MonoBehaviour
 
     void Start()
     {
-        currentHealth = maxHealth;
         rb.freezeRotation = true; // Lock rotation to prevent spinning
     }
 
@@ -53,24 +52,10 @@ public class HighHpFirstLocationEnemy : MonoBehaviour
         if (playerHealth != null)
         {
             playerHealth.TakeDamage(attackDamage);
+            Debug.Log("Enemy is attacking player!");
         }
     }
 
-    public void TakeDamage(int damage)
-    {
-        // Handle taking damage logic (use EnemyHealth script if necessary)
-        currentHealth -= damage;
-
-        if (currentHealth <= 0)
-        {
-            Die();
-        }
-    }
-
-    void Die()
-    {
-        Destroy(gameObject);
-    }
 
     void OnDrawGizmosSelected()
     {
