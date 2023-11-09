@@ -10,18 +10,56 @@ public class PlayerAttack : MonoBehaviour
 
     void Update()
     {
-        // Detect player movement direction
-        float horizontalInput = Input.GetAxisRaw("Horizontal");
-        float verticalInput = Input.GetAxisRaw("Vertical");
+        // Detect mouse position in world coordinates
+        Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 
-        if (horizontalInput != 0f || verticalInput != 0f)
-        {
-            lastMoveDirection = new Vector2(horizontalInput, verticalInput).normalized;
-        }
+        // Calculate direction from player to mouse position
+        Vector2 directionToMouse = mousePosition - (Vector2)transform.position;
+        directionToMouse.Normalize();
 
-        if (Input.GetKeyDown(KeyCode.Return))
+        // Determine attack direction based on angle
+        float angle = Vector2.SignedAngle(Vector2.right, directionToMouse);
+        lastMoveDirection = GetDirectionFromAngle(angle);
+
+        if (Input.GetKeyDown(KeyCode.Mouse0))
         {
             PerformMeleeAttack();
+        }
+    }
+
+    Vector2 GetDirectionFromAngle(float angle)
+    {
+        if (angle >= -22.5f && angle < 22.5f) // East
+        {
+            return Vector2.right;
+        }
+        else if (angle >= 22.5f && angle < 67.5f) // NorthEast
+        {
+            return new Vector2(1f, 1f).normalized;
+        }
+        else if (angle >= 67.5f && angle < 112.5f) // North
+        {
+            return Vector2.up;
+        }
+        else if (angle >= 112.5f && angle < 157.5f) // NorthWest
+        {
+            return new Vector2(-1f, 1f).normalized;
+        }
+        else if (angle >= 157.5f || angle < -157.5f) // West
+        {
+            return Vector2.left;
+        }
+        else if (angle >= -157.5f && angle < -112.5f) // SouthWest
+        {
+            return new Vector2(-1f, -1f).normalized;
+        }
+        else if (angle >= -112.5f && angle < -67.5f) // South
+        {
+            return Vector2.down;
+        }
+        else // SouthEast
+        {
+            return new Vector2(1f, -1f).normalized;
         }
     }
 

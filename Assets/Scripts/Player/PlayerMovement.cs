@@ -49,6 +49,10 @@ public class PlayerMovement : MonoBehaviour
 
             StartCoroutine(Dash(dashDirection));
             lastDashTime = Time.time;
+
+            // Set invulnerability during dash
+            PlayerHealth.instance.isInvulnerable = true;
+            StartCoroutine(DisableInvulnerability());
         }
         // Normal movement logic
         if (!isDashing)
@@ -82,6 +86,15 @@ public class PlayerMovement : MonoBehaviour
         yield return new WaitForSeconds(dashDuration);
         rb.velocity = Vector2.zero;
         isDashing = false;
+
+        // Disable invulnerability after dash
+        PlayerHealth.instance.isInvulnerable = false;
+    }
+
+    private IEnumerator DisableInvulnerability()
+    {
+        yield return new WaitForSeconds(dashDuration);
+        PlayerHealth.instance.isInvulnerable = false;
     }
 
     public void IncreaseSpeed(float amount)
