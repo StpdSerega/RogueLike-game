@@ -2,7 +2,6 @@ using UnityEngine;
 
 public class HighHpFirstLocationEnemy : MonoBehaviour
 {
-    public int maxHealth = 10; // High HP
     public float moveSpeed = 2f; // Movement speed
     public float detectionRange = 5f; // Range to detect the player and start moving towards them
     public float attackRange = 1f; // Close-range attack range

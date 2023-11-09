@@ -13,6 +13,13 @@ public class PlayerHealth : MonoBehaviour
 
     private float invulnerabilityDuration = 2.0f;
 
+    public static PlayerHealth instance;
+
+    void Awake()
+    {
+        instance = this;
+    }
+
     void Start()
     {
         currentHealth = maxHealth;

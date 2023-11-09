@@ -2,7 +2,6 @@ using UnityEngine;
 
 public class RangedEnemy : MonoBehaviour
 {
-    public int maxHealth = 5; // Medium HP
     public float detectionRange = 10f; // Detection and attack range
     public float fireRange = 5f; // Range to start firing
     public float fireRate = 1f; // Firing rate in seconds
@@ -10,12 +9,11 @@ public class RangedEnemy : MonoBehaviour
     public Transform firePoint; // Point where projectiles are spawned
     public Transform player; // Reference to the player's Transform
 
-    private int currentHealth;
     private bool isFiring = false;
 
     void Start()
     {
-        currentHealth = maxHealth;
+
     }
 
     void Update()
@@ -64,22 +62,5 @@ public class RangedEnemy : MonoBehaviour
                 playerHealth.TakeDamage(1);
             }
         }
-    }
-
-    public void TakeDamage(int damage)
-    {
-        // Handle taking damage logic (use EnemyHealth script if necessary)
-        currentHealth -= damage;
-
-        if (currentHealth <= 0)
-        {
-            Die();
-        }
-    }
-
-    void Die()
-    {
-        // Handle death logic (play death animation, drop items, etc.)
-        Destroy(gameObject);
     }
 }
