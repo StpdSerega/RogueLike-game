@@ -5,25 +5,29 @@ public class PlayerAttack : MonoBehaviour
     public float attackRange = 1f;
     public int attackDamage = 1;
     public LayerMask enemyLayer;
+    public float attackCooldown = 0.4f; // Час перезарядки в секундах
 
-    private Vector2 lastMoveDirection = Vector2.right; // Initial direction
+    private Vector2 lastMoveDirection = Vector2.right; 
+    private float lastAttackTime; // Час останньої атаки
 
     void Update()
     {
-        // Detect mouse position in world coordinates
+        // Детектувати позицію миші в світових координатах
         Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 
-        // Calculate direction from player to mouse position
+        // Розрахувати напрямок від гравця до позиції миші
         Vector2 directionToMouse = mousePosition - (Vector2)transform.position;
         directionToMouse.Normalize();
 
-        // Determine attack direction based on angle
+        // Визначити напрямок атаки на основі кута
         float angle = Vector2.SignedAngle(Vector2.right, directionToMouse);
         lastMoveDirection = GetDirectionFromAngle(angle);
 
-        if (Input.GetKeyDown(KeyCode.Mouse0))
+        // Перевірка перезарядки атаки
+        if (Input.GetKeyDown(KeyCode.Mouse0) && Time.time - lastAttackTime > attackCooldown)
         {
             PerformMeleeAttack();
+            lastAttackTime = Time.time; // Запам'ятати час останньої атаки
         }
     }
 
