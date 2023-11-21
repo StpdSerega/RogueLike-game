@@ -9,6 +9,7 @@ TagManager:
   - Event
   - Projectile
   - Wall
+  - EnemySpawnDoor
   layers:
   - Default
   - TransparentFX
