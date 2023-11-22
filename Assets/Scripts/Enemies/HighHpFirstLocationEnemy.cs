@@ -6,7 +6,6 @@ public class HighHpFirstLocationEnemy : MonoBehaviour
     public float detectionRange = 5f; // Range to detect the player and start moving towards them
     public float attackRange = 1f; // Close-range attack range
     public int attackDamage = 2; // Attack damage
-    public Transform player; // Reference to the player's Transform
     public Rigidbody2D rb; // Reference to the enemy's Rigidbody2D component
 
     private int currentHealth;
@@ -18,33 +17,34 @@ public class HighHpFirstLocationEnemy : MonoBehaviour
 
     void Update()
     {
-        if (player == null)
-        {
-            // Handle the case when the player is destroyed or not assigned yet
-            return;
-        }
+        // Find all GameObjects with the "Player" tag in the scene
+        GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
 
-        float distanceToPlayer = Vector2.Distance(transform.position, player.position);
+        // Iterate through each player object
+        foreach (GameObject player in players)
+        {
+            float distanceToPlayer = Vector2.Distance(transform.position, player.transform.position);
 
-        // Move towards the player when within detection range
-        if (distanceToPlayer <= detectionRange)
-        {
-            Vector2 direction = (player.position - transform.position).normalized;
-            rb.velocity = new Vector2(direction.x * moveSpeed, rb.velocity.y); // Lock Y velocity to prevent flying
-        }
-        else
-        {
-            rb.velocity = new Vector2(0f, rb.velocity.y); // Stop moving if the player is out of detection range
-        }
+            // Move towards the player when within detection range
+            if (distanceToPlayer <= detectionRange)
+            {
+                Vector2 direction = (player.transform.position - transform.position).normalized;
+                rb.velocity = new Vector2(direction.x * moveSpeed, rb.velocity.y); // Lock Y velocity to prevent flying
+            }
+            else
+            {
+                rb.velocity = new Vector2(0f, rb.velocity.y); // Stop moving if the player is out of detection range
+            }
 
-        // Attack the player when within attack range
-        if (distanceToPlayer <= attackRange)
-        {
-            Attack();
+            // Attack the player when within attack range
+            if (distanceToPlayer <= attackRange)
+            {
+                Attack(player);
+            }
         }
     }
 
-    void Attack()
+    void Attack(GameObject player)
     {
         // Handle attack logic (use EnemyHealth script if necessary)
         PlayerHealth playerHealth = player.GetComponent<PlayerHealth>();
@@ -54,7 +54,6 @@ public class HighHpFirstLocationEnemy : MonoBehaviour
             Debug.Log("Enemy is attacking player!");
         }
     }
-
 
     void OnDrawGizmosSelected()
     {

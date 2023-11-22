@@ -6,13 +6,13 @@ public class EnemyHealth : MonoBehaviour
     public int goldValue = 2;
     private int currentHealth;
 
-    private HealthBar healthBar; // Посилання на EnemyHealthUI
+    private HealthBar healthBar; // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ EnemyHealthUI
 
     void Start()
     {
         currentHealth = maxHealth;
 
-        // Знаходження інших компонентів тут (наприклад, прив'язка EnemyHealthUI).
+        // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ (пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅ'пїЅпїЅпїЅпїЅ EnemyHealthUI).
         healthBar = GetComponentInChildren<HealthBar>();
         if (healthBar == null)
         {
@@ -24,7 +24,7 @@ public class EnemyHealth : MonoBehaviour
     {
         currentHealth -= damage;
 
-        // Оновлення Slider при кожному зніманні здоров'я
+        // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ Slider пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ'пїЅ
         if (healthBar != null)
         {
             healthBar.UpdateHealth(currentHealth, maxHealth);
@@ -44,7 +44,14 @@ public class EnemyHealth : MonoBehaviour
             playerGoldCounter.AddGold(goldValue);
         }
 
-        // Реалізуйте тут логіку смерті (наприклад, відтворення анімації смерті, викидання предметів і т.д.).
+        EnemySpawnManager enemySpawnManager = FindObjectOfType<EnemySpawnManager>();
+        if (enemySpawnManager != null)
+        {
+            enemySpawnManager.EnemyDied(gameObject);
+        }
+
+        // Implement death logic here (e.g., play death animation, drop items, etc.)
         Destroy(gameObject);
     }
+
 }

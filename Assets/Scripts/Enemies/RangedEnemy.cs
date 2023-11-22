@@ -7,36 +7,41 @@ public class RangedEnemy : MonoBehaviour
     public float fireRate = 1f; // Firing rate in seconds
     public GameObject projectilePrefab; // Prefab of the projectile to fire
     public Transform firePoint; // Point where projectiles are spawned
-    public Transform player; // Reference to the player's Transform
 
     private bool isFiring = false;
 
     void Start()
     {
-
     }
 
     void Update()
     {
-        float distanceToPlayer = Vector2.Distance(transform.position, player.position);
+        // Find all GameObjects with the "Player" tag in the scene
+        GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
 
-        if (distanceToPlayer <= detectionRange)
+        // Iterate through each player object
+        foreach (GameObject player in players)
         {
-            // Rotate the enemy to face the player
-            Vector2 direction = (player.position - transform.position).normalized;
-            transform.up = direction;
+            float distanceToPlayer = Vector2.Distance(transform.position, player.transform.position);
 
-            if (distanceToPlayer <= fireRange && !isFiring)
+            if (distanceToPlayer <= detectionRange)
             {
-                // Start firing when the player is within the firing range
-                isFiring = true;
-                InvokeRepeating(nameof(FireProjectile), 0f, fireRate);
-            }
-            else if (distanceToPlayer > fireRange && isFiring)
-            {
-                // Stop firing when the player moves out of the firing range
-                isFiring = false;
-                CancelInvoke(nameof(FireProjectile));
+                // Rotate the enemy to face the player
+                Vector2 direction = (player.transform.position - transform.position).normalized;
+                transform.up = direction;
+
+                if (distanceToPlayer <= fireRange && !isFiring)
+                {
+                    // Start firing when the player is within the firing range
+                    isFiring = true;
+                    InvokeRepeating(nameof(FireProjectile), 0f, fireRate);
+                }
+                else if (distanceToPlayer > fireRange && isFiring)
+                {
+                    // Stop firing when the player moves out of the firing range
+                    isFiring = false;
+                    CancelInvoke(nameof(FireProjectile));
+                }
             }
         }
     }
