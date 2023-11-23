@@ -45,7 +45,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9c642852beb658b4bab0f1e8a6f330f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  nextSceneName: Lvl4
+  nextSceneName: BossScene
   interactKey: 101
 --- !u!61 &3696982469018226787
 BoxCollider2D:
@@ -83,7 +83,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8418788202143581266}
   m_Layer: 0
-  m_Name: LVL4TransitionDoor
+  m_Name: BossSceneTransitionDoor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

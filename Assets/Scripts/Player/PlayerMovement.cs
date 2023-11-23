@@ -97,9 +97,9 @@ public class PlayerMovement : MonoBehaviour
         PlayerHealth.instance.isInvulnerable = false;
     }
 
-    public void IncreaseSpeed(float amount)
+    public void IncreaseSpeed(float percentage)
     {
-        moveSpeed += amount;
+        moveSpeed *= (1 + percentage / 100);
     }
 
 }

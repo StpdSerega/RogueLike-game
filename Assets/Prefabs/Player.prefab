@@ -368,7 +368,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   attackRange: 1
-  attackDamage: 1
+  attackDamage: 25
   enemyLayer:
     serializedVersion: 2
     m_Bits: 64

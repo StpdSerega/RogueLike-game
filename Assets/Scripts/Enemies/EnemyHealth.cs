@@ -2,17 +2,16 @@ using UnityEngine;
 
 public class EnemyHealth : MonoBehaviour
 {
-    public int maxHealth = 3;
+    public float maxHealth = 25;
     public int goldValue = 2;
-    private int currentHealth;
+    private float currentHealth;
 
-    private HealthBar healthBar; // ��������� �� EnemyHealthUI
+    private HealthBar healthBar; 
 
     void Start()
     {
         currentHealth = maxHealth;
 
-        // ����������� ����� ���������� ��� (���������, ����'���� EnemyHealthUI).
         healthBar = GetComponentInChildren<HealthBar>();
         if (healthBar == null)
         {
@@ -20,11 +19,10 @@ public class EnemyHealth : MonoBehaviour
         }
     }
 
-    public void TakeDamage(int damage)
+    public void TakeDamage(float damage)
     {
         currentHealth -= damage;
 
-        // ��������� Slider ��� ������� �������� ������'�
         if (healthBar != null)
         {
             healthBar.UpdateHealth(currentHealth, maxHealth);
@@ -50,7 +48,6 @@ public class EnemyHealth : MonoBehaviour
             enemySpawnManager.EnemyDied(gameObject);
         }
 
-        // Implement death logic here (e.g., play death animation, drop items, etc.)
         Destroy(gameObject);
     }
 

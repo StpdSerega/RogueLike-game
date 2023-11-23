@@ -3,7 +3,7 @@ using UnityEngine;
 public class PlayerAttack : MonoBehaviour
 {
     public float attackRange = 1f;
-    public int attackDamage = 1;
+    public float attackDamage = 25;
     public LayerMask enemyLayer;
     public float attackCooldown = 0.4f; // Час перезарядки в секундах
 
@@ -90,8 +90,8 @@ public class PlayerAttack : MonoBehaviour
         Gizmos.DrawWireSphere(attackPosition, attackRange);
     }
 
-    public void IncreaseAttack(int amount)
+    public void IncreaseAttack(float percentage)
     {
-        attackDamage += amount;
+        attackDamage *= (1 + percentage / 100);
     }
 }

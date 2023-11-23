@@ -4,16 +4,18 @@ using UnityEngine;
 
 public class AttackBuff : MonoBehaviour
 {
-    public int attackBoost = 1;
+    public float attackBoost = 20f;
+    private bool isUsed = false;
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.CompareTag("Player"))
+        if (!isUsed && other.CompareTag("Player"))
         {
             PlayerAttack playerAttack = other.GetComponent<PlayerAttack>();
             if (playerAttack != null)
             {
                 playerAttack.IncreaseAttack(attackBoost);
+                isUsed = true; // Встановлюємо флаг, що баф вже використано
                 Destroy(gameObject);
             }
         }
