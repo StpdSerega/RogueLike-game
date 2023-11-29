@@ -296,7 +296,7 @@ BoxCollider2D:
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
-  m_AutoTiling: 0
+  m_AutoTiling: 1
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
@@ -367,7 +367,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 477337cd39ed01e44b191542786ac76e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attackRange: 1
+  attackRange: 0.8
   attackDamage: 25
   enemyLayer:
     serializedVersion: 2
@@ -403,8 +403,8 @@ EdgeCollider2D:
   m_Offset: {x: 0, y: 0}
   m_EdgeRadius: 0
   m_Points:
-  - {x: -0.50551605, y: 0.28172654}
-  - {x: -0.504055, y: -0.2732178}
+  - {x: -0.5040034, y: 0.487443}
+  - {x: -0.50199145, y: -0.45948628}
   m_AdjacentStartPoint: {x: 0, y: 0}
   m_AdjacentEndPoint: {x: 0, y: 0}
   m_UseAdjacentStartPoint: 0
@@ -425,8 +425,8 @@ EdgeCollider2D:
   m_Offset: {x: 0, y: 0}
   m_EdgeRadius: 0
   m_Points:
-  - {x: 0.50611496, y: 0.28169218}
-  - {x: 0.50367737, y: -0.2874359}
+  - {x: 0.5030897, y: 0.49043366}
+  - {x: 0.50367737, y: -0.47403243}
   m_AdjacentStartPoint: {x: 0, y: 0}
   m_AdjacentEndPoint: {x: 0, y: 0}
   m_UseAdjacentStartPoint: 0

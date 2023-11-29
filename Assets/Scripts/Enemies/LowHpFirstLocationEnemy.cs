@@ -1,78 +1,80 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class LowHpFirstLocationEnemy : MonoBehaviour
 {
-    public float detectionRange = 10.0f;
-    public Transform player;
-    public float chargeTime = 1.0f; 
-    public float attackSpeed = 5.0f; 
-    public float reloadTime = 1.0f; 
-    public int damage = 1;
+    public float moveSpeed = 5f; // Movement speed
+    public float detectionRange = 8f; // Range to detect the player and start moving towards them
+    public float attackRange = 3f; // Attack range
+    public int attackDamage = 3; // Attack damage
+    public Rigidbody2D rb; // Reference to the enemy's Rigidbody2D component
+    public LayerMask playerLayer; // LayerMask for the player
 
-    private bool isCharging = false;
-    private bool isReloading = false;
-    private Vector2 chargeDirection;
+    private int currentHealth;
 
-    private void Update()
+    void Start()
     {
-        float distanceToPlayer = Vector2.Distance(transform.position, player.position);
-
-        if (distanceToPlayer < detectionRange && !isCharging && !isReloading)
-        {
-            StartCoroutine(ChargeAndAttack());
-        }
-
-        if (isCharging)
-        {
-            transform.Translate(chargeDirection * attackSpeed * Time.deltaTime);
-        }
+        rb.freezeRotation = true; // Lock rotation to prevent spinning
     }
 
-    IEnumerator ChargeAndAttack()
+    void Update()
     {
-        isCharging = true;
+        // Find all GameObjects with the "Player" tag in the scene
+        GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
 
-        chargeDirection = (player.position - transform.position).normalized;
-
-        yield return new WaitForSeconds(chargeTime);
-
-        isCharging = false;
-
-        yield return new WaitForSeconds(0.5f);
-
-        isReloading = true;
-        yield return new WaitForSeconds(reloadTime);
-        isReloading = false;
-    }
-
-    private void OnTriggerEnter2D(Collider2D other)
-    {
-        if (other.CompareTag("Player"))
+        // Iterate through each player object
+        foreach (GameObject player in players)
         {
-            PlayerHealth playerHealth = other.GetComponent<PlayerHealth>();
-            if (playerHealth != null && !playerHealth.isInvulnerable)
+            float distanceToPlayer = Vector2.Distance(transform.position, player.transform.position);
+
+            // Move towards the player when within detection range
+            if (distanceToPlayer <= detectionRange)
             {
-                playerHealth.TakeDamage(damage);
-                StartCoroutine(ReloadEnemy());
+                Vector2 direction = (player.transform.position - transform.position).normalized;
+                rb.velocity = new Vector2(direction.x * moveSpeed, direction.y * moveSpeed); // Allow movement in Y direction for flying
+            }
+            else
+            {
+                rb.velocity = Vector2.zero; // Stop moving if the player is out of detection range
+            }
+
+            // Attack the player when within attack range
+            if (distanceToPlayer <= attackRange)
+            {
+                Attack(player);
             }
         }
+    }
 
-        if (other.CompareTag("Ground"))
+    void Attack(GameObject player)
+    {
+        // Handle attack logic (use EnemyHealth script if necessary)
+        PlayerHealth playerHealth = player.GetComponent<PlayerHealth>();
+        if (playerHealth != null)
         {
-            Vector2 currentPosition = new Vector2(transform.position.x, transform.position.y);
-
-            Vector2 previousPosition = currentPosition - chargeDirection * 0.25f; 
-
-            transform.position = new Vector3(previousPosition.x, previousPosition.y, transform.position.z);
-
+            playerHealth.TakeDamage(attackDamage);
+            Debug.Log("Enemy is attacking player!");
         }
     }
 
-    IEnumerator ReloadEnemy()
+    void FixedUpdate()
     {
-        yield return new WaitForSeconds(reloadTime);
-        isReloading = false;
+        // Check for overlapping with the player and pass through
+        Collider2D playerCollider = Physics2D.OverlapCircle(transform.position, 1f, playerLayer);
+        if (playerCollider != null)
+        {
+            Physics2D.IgnoreCollision(playerCollider, GetComponent<Collider2D>());
+        }
+    }
+
+    void OnDrawGizmosSelected()
+    {
+        // Draw detection range gizmo
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawWireSphere(transform.position, detectionRange);
+
+        // Draw attack range gizmo
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position, attackRange);
     }
 }

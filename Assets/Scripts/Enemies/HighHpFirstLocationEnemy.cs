@@ -51,7 +51,6 @@ public class HighHpFirstLocationEnemy : MonoBehaviour
         if (playerHealth != null)
         {
             playerHealth.TakeDamage(attackDamage);
-            Debug.Log("Enemy is attacking player!");
         }
     }
 

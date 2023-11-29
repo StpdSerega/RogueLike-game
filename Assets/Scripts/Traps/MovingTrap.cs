@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class MovingTrap : MonoBehaviour
 {
-    public Transform startPoint; 
-    public Transform endPoint;   
-    public float speed = 3.0f;
+    public Transform startPoint;
+    public Transform endPoint;
+    public float speed = 4.0f;
     public int damage = 1;
 
     private float journeyLength;
@@ -19,15 +19,14 @@ public class MovingTrap : MonoBehaviour
         startTime = Time.time;
     }
 
-    private void OnTriggerEnter2D(Collider2D other)
+    private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (other.CompareTag("Player"))
+        if (collision.collider.CompareTag("Player"))
         {
-            PlayerHealth playerHealth = other.GetComponent<PlayerHealth>();
+            PlayerHealth playerHealth = collision.collider.GetComponent<PlayerHealth>();
             if (playerHealth != null && !playerHealth.isInvulnerable)
             {
                 playerHealth.TakeDamage(damage);
-
                 Destroy(gameObject);
             }
         }

@@ -216,7 +216,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4d7797f83efec75478c090b122d4b042, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 5
+  maxHealth: 50
   goldValue: 2
 --- !u!114 &3557542916109146822
 MonoBehaviour:
@@ -235,7 +235,6 @@ MonoBehaviour:
   fireRate: 2
   projectilePrefab: {fileID: 7604934836014985940, guid: 9ef5dddd5a879444c8849f899fea2898, type: 3}
   firePoint: {fileID: 4466558609136941232}
-  player: {fileID: 48984619347941600, guid: 89036416ee38ec84d87491d36f5e66e3, type: 3}
 --- !u!114 &2986261607594662880
 MonoBehaviour:
   m_ObjectHideFlags: 0
