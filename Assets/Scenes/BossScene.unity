@@ -178,6 +178,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: SpawnDoor
       objectReference: {fileID: 0}
+    - target: {fileID: 2490149304775937335, guid: 29d4e712be139f243963ec2436e3c7be, type: 3}
+      propertyPath: playerPrefab
+      value: 
+      objectReference: {fileID: 48984619347941607, guid: 89036416ee38ec84d87491d36f5e66e3, type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 29d4e712be139f243963ec2436e3c7be, type: 3}
 --- !u!1001 &1088499590
@@ -382,17 +386,25 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 747463089, guid: fced929e3e2e99c47bdcd63bc423971d, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 747463089, guid: fced929e3e2e99c47bdcd63bc423971d, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3272695738262051720, guid: fced929e3e2e99c47bdcd63bc423971d, type: 3}
-      propertyPath: rb
-      value: 
-      objectReference: {fileID: 3272695738262051721, guid: fced929e3e2e99c47bdcd63bc423971d, type: 3}
+      propertyPath: attackRange
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 3272695738262051723, guid: fced929e3e2e99c47bdcd63bc423971d, type: 3}
       propertyPath: m_RootOrder
       value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 3272695738262051723, guid: fced929e3e2e99c47bdcd63bc423971d, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -7.06
+      value: -3.16
       objectReference: {fileID: 0}
     - target: {fileID: 3272695738262051723, guid: fced929e3e2e99c47bdcd63bc423971d, type: 3}
       propertyPath: m_LocalPosition.y
@@ -433,10 +445,6 @@ PrefabInstance:
     - target: {fileID: 3272695738262051764, guid: fced929e3e2e99c47bdcd63bc423971d, type: 3}
       propertyPath: m_Name
       value: BossEnemy1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3272695738262051765, guid: fced929e3e2e99c47bdcd63bc423971d, type: 3}
-      propertyPath: m_IsTrigger
-      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fced929e3e2e99c47bdcd63bc423971d, type: 3}

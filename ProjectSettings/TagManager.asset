@@ -11,6 +11,7 @@ TagManager:
   - Wall
   - EnemySpawnDoor
   - Trap
+  - Boss
   layers:
   - Default
   - TransparentFX

@@ -2,175 +2,153 @@ using UnityEngine;
 
 public class BossEnemyLocationFirst : MonoBehaviour
 {
-    public float maxHealth = 1000f;
-    public float attackDamage = 1f;
-    public float moveSpeed = 2f;
-    public float jumpForce = 10f;
-    public float jumpCooldown = 20f;
-    public float chaseRangeStage1 = 10f;
-    public float chaseRangeStage2 = 15f;
-    public float chaseRangeStage3 = 20f;
-    public float jumpHeightStage1 = 5f;
-    public float jumpHeightStage2 = 8f;
-    public float jumpHeightStage3 = 10f;
-    public float jumpFallMultiplier = 2f;
-    public float projectileCooldownStage3 = 10f;
-    public float attackRange = 1f; // Додано attackRange
-    public Rigidbody2D rb; // Reference to the enemy's Rigidbody2D component
-    public GameObject projectilePrefab;
+    public float moveSpeed = 3f; // Швидкість руху
+    public float detectionRange = 25f; // Діапазон виявлення гравця
+    public float attackRange = 2.7f; // Діапазон атаки
+    public int attackDamage = 2; // Шкода атаки
+    public Rigidbody2D rb; // Посилання на компонент Rigidbody2D боса
+    public BossHealth bossHealth; // Посилання на компонент здоров'я боса
 
-    private float currentHealth;
+    public GameObject projectile; // Префаб снаряду
+    public Transform leftFirePoint; // Точка стрільби зліва
+    public Transform rightFirePoint; // Точка стрільби справа
+    public float projectileSpeed = 5f; // Швидкість снаряду
+    public int projectilesPerSide = 3; // Кількість снарядів з кожного боку
+
+    private int currentHealth;
     private bool isJumping = false;
     private float lastJumpTime;
     private float lastProjectileTime;
 
-
-    private enum BossStage
-    {
-        Stage1,
-        Stage2,
-        Stage3
-    }
-
-    private BossStage currentStage;
-
     void Start()
     {
-        rb.freezeRotation = true; // Lock rotation to prevent spinning
-        currentHealth = maxHealth; // Змінено ініціалізацію на maxHealth
-        currentStage = BossStage.Stage1;
+        rb.freezeRotation = true; // Заборона обертання для уникнення обертання
+        bossHealth = GetComponent<BossHealth>(); // Отримуємо посилання на компонент здоров'я боса
     }
 
     void Update()
     {
-        GameObject player = GameObject.FindGameObjectWithTag("Player");
+        // Знаходимо всі об'єкти з тегом "Player" у сцені
+        GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
 
-        if (player != null)
+        // Проходимося по кожному об'єкту гравця
+        foreach (GameObject player in players)
         {
             float distanceToPlayer = Vector2.Distance(transform.position, player.transform.position);
 
-            UpdateBossStage(distanceToPlayer);
-
-            switch (currentStage)
-            {
-                case BossStage.Stage1:
-                    MoveAndAttack(player, chaseRangeStage1);
-                    Jump(jumpHeightStage1, jumpCooldown);
-                    break;
-                case BossStage.Stage2:
-                    MoveAndAttack(player, chaseRangeStage2);
-                    Jump(jumpHeightStage2, jumpCooldown);
-                    break;
-                case BossStage.Stage3:
-                    MoveAndAttack(player, chaseRangeStage3);
-                    Jump(jumpHeightStage3, jumpCooldown);
-                    ShootProjectiles(projectileCooldownStage3);
-                    break;
-            }
-        }
-    }
-
-    void UpdateBossStage(float distanceToPlayer)
-    {
-        if (currentHealth > 700)
-        {
-            currentStage = BossStage.Stage1;
-        }
-        else if (currentHealth > 350)
-        {
-            currentStage = BossStage.Stage2;
-        }
-        else
-        {
-            currentStage = BossStage.Stage3;
-        }
-    }
-
-    void MoveAndAttack(GameObject player, float chaseRange)
-    {
-        if (player != null)
-        {
-            float distanceToPlayer = Vector2.Distance(transform.position, player.transform.position);
-
-            if (distanceToPlayer <= chaseRange)
+            // Рухаємося в бік гравця, якщо він знаходиться в діапазоні виявлення
+            if (distanceToPlayer <= detectionRange)
             {
                 Vector2 direction = (player.transform.position - transform.position).normalized;
-                GetComponent<Rigidbody2D>().velocity = new Vector2(direction.x * moveSpeed, GetComponent<Rigidbody2D>().velocity.y);
+                rb.velocity = new Vector2(direction.x * moveSpeed, rb.velocity.y); // Заборона зміни Y-складової швидкості для уникнення літання
             }
             else
             {
-                GetComponent<Rigidbody2D>().velocity = Vector2.zero;
+                rb.velocity = new Vector2(0f, rb.velocity.y); // Зупинка руху, якщо гравець знаходиться за межами діапазону виявлення
             }
 
+            // Атакуємо гравця, якщо він знаходиться в діапазоні атаки
             if (distanceToPlayer <= attackRange)
             {
                 Attack(player);
             }
         }
-    }
 
-    void Jump(float jumpHeight, float jumpCooldown)
-    {
-        if (!isJumping && Time.time - lastJumpTime > jumpCooldown)
+        // Перевірка умови стрибка
+        if (Time.time - lastJumpTime > (bossHealth.currentHealth > 1000 ? 12f : 6f) && !isJumping)
         {
-            GetComponent<Rigidbody2D>().AddForce(Vector2.up * Mathf.Sqrt(jumpHeight * -2f * Physics2D.gravity.y), ForceMode2D.Impulse);
-            isJumping = true;
-            lastJumpTime = Time.time;
+            Jump();
         }
 
-        if (GetComponent<Rigidbody2D>().velocity.y < 0)
+        // Перевірка умови стрільби снарядів
+        if (bossHealth.currentHealth < 600 && Time.time - lastProjectileTime > 10f)
         {
-            GetComponent<Rigidbody2D>().velocity += Vector2.up * Physics2D.gravity.y * (jumpFallMultiplier - 1) * Time.deltaTime;
+            ShootProjectiles();
         }
-    }
 
-    void ShootProjectiles(float projectileCooldown)
-    {
-        if (Time.time - lastProjectileTime > projectileCooldown)
+        // Умова для збільшення швидкості, якщо здоров'я менше 700
+        if (bossHealth.currentHealth < 1000 && bossHealth.currentHealth >= 600)
         {
-            GameObject projectile = Instantiate(projectilePrefab, transform.position, Quaternion.identity);
-            Destroy(projectile, 3f);
-            lastProjectileTime = Time.time;
+            moveSpeed = 5f;
+        }
+
+        if (bossHealth.currentHealth < 600)
+        {
+            moveSpeed = 6f;
         }
     }
 
     void Attack(GameObject player)
     {
+        // Логіка атаки (використовуйте скрипт EnemyHealth, якщо потрібно)
         PlayerHealth playerHealth = player.GetComponent<PlayerHealth>();
         if (playerHealth != null)
         {
-            playerHealth.TakeDamage(Mathf.RoundToInt(attackDamage));
+            playerHealth.TakeDamage(attackDamage);
         }
+    }
+
+    void Jump()
+    {
+        rb.velocity = Vector2.zero; // Зупиняємо рух перед стрибком
+
+        // Стрибаємо вгору
+        rb.AddForce(Vector2.up * 200f, ForceMode2D.Impulse);
+        isJumping = true;
+        lastJumpTime = Time.time;
+    }
+
+    void ShootProjectiles()
+    {
+        // Стрільба снарядів
+        for (int i = 0; i < projectilesPerSide; i++)
+        {
+            Invoke("ShootSingleProjectile", i * 0.5f); // Викликати стрільбу для кожного снаряду з затримкою
+        }
+
+        lastProjectileTime = Time.time; // Оновлюємо час останньої стрільби
+    }
+
+    void ShootSingleProjectile()
+    {
+        // Лівий снаряд
+        GameObject leftProjectile = Instantiate(projectile, leftFirePoint.position, Quaternion.identity);
+        Rigidbody2D leftRb = leftProjectile.GetComponent<Rigidbody2D>();
+        leftRb.velocity = Vector2.left * projectileSpeed;
+
+        // Правий снаряд
+        GameObject rightProjectile = Instantiate(projectile, rightFirePoint.position, Quaternion.identity);
+        Rigidbody2D rightRb = rightProjectile.GetComponent<Rigidbody2D>();
+        rightRb.velocity = Vector2.right * projectileSpeed;
     }
 
     void OnCollisionEnter2D(Collision2D collision)
     {
+        // Перевіряємо зіткнення з гравцем
+        if (collision.gameObject.CompareTag("Player"))
+        {
+            // Шкода для гравця при зіткненні з босом
+            PlayerHealth playerHealth = collision.gameObject.GetComponent<PlayerHealth>();
+            if (playerHealth != null)
+            {
+                playerHealth.TakeDamage(attackDamage);
+            }
+        }
+
+        // Визначаємо, чи бос знаходиться в стані стрибка
         if (collision.gameObject.CompareTag("Ground") && isJumping)
         {
             isJumping = false;
         }
     }
 
-    void OnTriggerEnter2D(Collider2D other)
-    {
-        if (other.CompareTag("Player"))
-        {
-            // Дії, які відбуваються при зіткненні з гравцем (за вашим вибором)
-        }
-    }
-
     void OnDrawGizmosSelected()
     {
+        // Візуалізація діапазону виявлення та атаки
         Gizmos.color = Color.yellow;
-        Gizmos.DrawWireSphere(transform.position, chaseRangeStage1);
+        Gizmos.DrawWireSphere(transform.position, detectionRange);
 
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, attackRange);
-
-        Gizmos.color = Color.green;
-        Gizmos.DrawWireSphere(transform.position, chaseRangeStage2);
-
-        Gizmos.color = Color.blue;
-        Gizmos.DrawWireSphere(transform.position, chaseRangeStage3);
     }
 }
