@@ -15,7 +15,7 @@ public class SpeedBuff : MonoBehaviour
             if (playerMovement != null)
             {
                 playerMovement.IncreaseSpeed(speedMultiplier);
-                isUsed = true; // Встановлюємо флаг, що баф вже використано
+                isUsed = true; 
                 Destroy(gameObject);
             }
         }

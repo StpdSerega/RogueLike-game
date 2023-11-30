@@ -15,7 +15,7 @@ public class AttackBuff : MonoBehaviour
             if (playerAttack != null)
             {
                 playerAttack.IncreaseAttack(attackBoost);
-                isUsed = true; // Встановлюємо флаг, що баф вже використано
+                isUsed = true; 
                 Destroy(gameObject);
             }
         }

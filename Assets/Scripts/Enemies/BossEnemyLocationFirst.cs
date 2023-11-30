@@ -2,18 +2,18 @@ using UnityEngine;
 
 public class BossEnemyLocationFirst : MonoBehaviour
 {
-    public float moveSpeed = 3f; // Швидкість руху
-    public float detectionRange = 25f; // Діапазон виявлення гравця
-    public float attackRange = 2.7f; // Діапазон атаки
-    public int attackDamage = 2; // Шкода атаки
-    public Rigidbody2D rb; // Посилання на компонент Rigidbody2D боса
-    public BossHealth bossHealth; // Посилання на компонент здоров'я боса
+    public float moveSpeed = 3f; 
+    public float detectionRange = 25f; 
+    public float attackRange = 2.7f; 
+    public int attackDamage = 2;
+    public float projectileSpeed = 5f;
+    public int projectilesPerSide = 3;
 
-    public GameObject projectile; // Префаб снаряду
-    public Transform leftFirePoint; // Точка стрільби зліва
-    public Transform rightFirePoint; // Точка стрільби справа
-    public float projectileSpeed = 5f; // Швидкість снаряду
-    public int projectilesPerSide = 3; // Кількість снарядів з кожного боку
+    public Rigidbody2D rb;
+    public BossHealth bossHealth;
+    public GameObject projectile; 
+    public Transform leftFirePoint;
+    public Transform rightFirePoint; 
 
     private int currentHealth;
     private bool isJumping = false;
@@ -22,51 +22,51 @@ public class BossEnemyLocationFirst : MonoBehaviour
 
     void Start()
     {
-        rb.freezeRotation = true; // Заборона обертання для уникнення обертання
-        bossHealth = GetComponent<BossHealth>(); // Отримуємо посилання на компонент здоров'я боса
+        rb.freezeRotation = true; 
+        bossHealth = GetComponent<BossHealth>(); 
     }
 
     void Update()
     {
-        // Знаходимо всі об'єкти з тегом "Player" у сцені
+       
         GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
 
-        // Проходимося по кожному об'єкту гравця
+       
         foreach (GameObject player in players)
         {
             float distanceToPlayer = Vector2.Distance(transform.position, player.transform.position);
 
-            // Рухаємося в бік гравця, якщо він знаходиться в діапазоні виявлення
+            
             if (distanceToPlayer <= detectionRange)
             {
                 Vector2 direction = (player.transform.position - transform.position).normalized;
-                rb.velocity = new Vector2(direction.x * moveSpeed, rb.velocity.y); // Заборона зміни Y-складової швидкості для уникнення літання
+                rb.velocity = new Vector2(direction.x * moveSpeed, rb.velocity.y); 
             }
             else
             {
-                rb.velocity = new Vector2(0f, rb.velocity.y); // Зупинка руху, якщо гравець знаходиться за межами діапазону виявлення
+                rb.velocity = new Vector2(0f, rb.velocity.y); 
             }
 
-            // Атакуємо гравця, якщо він знаходиться в діапазоні атаки
+            
             if (distanceToPlayer <= attackRange)
             {
                 Attack(player);
             }
         }
 
-        // Перевірка умови стрибка
-        if (Time.time - lastJumpTime > (bossHealth.currentHealth > 1000 ? 12f : 6f) && !isJumping)
+       
+        if (Time.time - lastJumpTime > (bossHealth.currentHealth > 1000  ? 15f : 7f) && !isJumping)
         {
             Jump();
         }
 
-        // Перевірка умови стрільби снарядів
-        if (bossHealth.currentHealth < 600 && Time.time - lastProjectileTime > 10f)
+       
+        if (bossHealth.currentHealth < 600 && Time.time - lastProjectileTime > 5f)
         {
             ShootProjectiles();
         }
 
-        // Умова для збільшення швидкості, якщо здоров'я менше 700
+       
         if (bossHealth.currentHealth < 1000 && bossHealth.currentHealth >= 600)
         {
             moveSpeed = 5f;
@@ -74,13 +74,13 @@ public class BossEnemyLocationFirst : MonoBehaviour
 
         if (bossHealth.currentHealth < 600)
         {
-            moveSpeed = 6f;
+            moveSpeed = 7f;
         }
     }
 
     void Attack(GameObject player)
     {
-        // Логіка атаки (використовуйте скрипт EnemyHealth, якщо потрібно)
+        
         PlayerHealth playerHealth = player.GetComponent<PlayerHealth>();
         if (playerHealth != null)
         {
@@ -90,10 +90,10 @@ public class BossEnemyLocationFirst : MonoBehaviour
 
     void Jump()
     {
-        rb.velocity = Vector2.zero; // Зупиняємо рух перед стрибком
+        rb.velocity = Vector2.zero; 
 
-        // Стрибаємо вгору
-        rb.AddForce(Vector2.up * 200f, ForceMode2D.Impulse);
+        
+        rb.AddForce(Vector2.up * 170f, ForceMode2D.Impulse);
         isJumping = true;
         lastJumpTime = Time.time;
     }
@@ -103,10 +103,10 @@ public class BossEnemyLocationFirst : MonoBehaviour
         // Стрільба снарядів
         for (int i = 0; i < projectilesPerSide; i++)
         {
-            Invoke("ShootSingleProjectile", i * 0.5f); // Викликати стрільбу для кожного снаряду з затримкою
+            Invoke("ShootSingleProjectile", i * 0.5f); 
         }
 
-        lastProjectileTime = Time.time; // Оновлюємо час останньої стрільби
+        lastProjectileTime = Time.time; 
     }
 
     void ShootSingleProjectile()
@@ -123,11 +123,9 @@ public class BossEnemyLocationFirst : MonoBehaviour
     }
 
     void OnCollisionEnter2D(Collision2D collision)
-    {
-        // Перевіряємо зіткнення з гравцем
+    {        
         if (collision.gameObject.CompareTag("Player"))
-        {
-            // Шкода для гравця при зіткненні з босом
+        {            
             PlayerHealth playerHealth = collision.gameObject.GetComponent<PlayerHealth>();
             if (playerHealth != null)
             {
@@ -135,7 +133,6 @@ public class BossEnemyLocationFirst : MonoBehaviour
             }
         }
 
-        // Визначаємо, чи бос знаходиться в стані стрибка
         if (collision.gameObject.CompareTag("Ground") && isJumping)
         {
             isJumping = false;
@@ -144,7 +141,6 @@ public class BossEnemyLocationFirst : MonoBehaviour
 
     void OnDrawGizmosSelected()
     {
-        // Візуалізація діапазону виявлення та атаки
         Gizmos.color = Color.yellow;
         Gizmos.DrawWireSphere(transform.position, detectionRange);
 

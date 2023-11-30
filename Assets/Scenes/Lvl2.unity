@@ -318,6 +318,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 05ec996a6cd01b54b8b40e000ab75a4c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  maxEnemies: 4
+  spawnDelay: 2
+  attackBuffPrefab: {fileID: 8383492132263482299, guid: 4f8dec21aa46002439998ecdfad63f08, type: 3}
+  hpBuffPrefab: {fileID: 1161069215903976100, guid: b0863c8871c55a14da7f7d593f8014b0, type: 3}
+  speedBuffPrefab: {fileID: 1704898430457857139, guid: e4b0dba2c83c19941b104cea05d7032a, type: 3}
+  enemiesNeededForNextStage: 4
+  nextStageDoorPrefab: {fileID: 4458245428417484440, guid: 389422c61d4b04d49ad6528347835d43, type: 3}
   enemyPrefabs:
   - {fileID: 4002390292474567071, guid: 3065ab33603c43444893eb77af04fd8e, type: 3}
   - {fileID: 828843338957783815, guid: 0cf0126dac30a044187e41887770147d, type: 3}
@@ -325,10 +332,6 @@ MonoBehaviour:
   - {fileID: 1894161995}
   - {fileID: 2142465377}
   - {fileID: 1174615640}
-  maxEnemies: 4
-  spawnDelay: 2
-  enemiesNeededForNextStage: 4
-  nextStageDoorPrefab: {fileID: 4458245428417484440, guid: 389422c61d4b04d49ad6528347835d43, type: 3}
 --- !u!4 &255241918
 Transform:
   m_ObjectHideFlags: 0
