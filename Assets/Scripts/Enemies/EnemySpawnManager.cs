@@ -4,12 +4,16 @@ using UnityEngine;
 
 public class EnemySpawnManager : MonoBehaviour
 {
-    public GameObject[] enemyPrefabs; // Array of enemy prefabs
-    public Transform[] spawnPoints; // Array of spawn points
     public int maxEnemies = 10; // Maximum number of enemies in the room
     public float spawnDelay = 1f; // Delay before activating spawned enemies (in seconds)
+
+    public GameObject attackBuffPrefab;
+    public GameObject hpBuffPrefab;
+    public GameObject speedBuffPrefab;
     public int enemiesNeededForNextStage = 5; // Number of enemies needed to transform the door
     public GameObject nextStageDoorPrefab; // Next stage door prefab
+    public GameObject[] enemyPrefabs; // Array of enemy prefabs
+    public Transform[] spawnPoints; // Array of spawn points
 
     private int totalEnemiesSpawned = 0;
     private int enemiesDefeated = 0;
@@ -82,6 +86,15 @@ public class EnemySpawnManager : MonoBehaviour
             // Choose a random door to transform
             GameObject randomDoor = enemySpawnDoors[Random.Range(0, enemySpawnDoors.Length)];
 
+            // Determine which bonus to spawn
+            int bonusType = Random.Range(1, 4); // Random number between 1 and 3
+
+            // Instantiate the corresponding bonus prefab at the same position and rotation
+            GameObject bonusPrefab = GetBonusPrefabByType(bonusType);
+            GameObject bonus = Instantiate(bonusPrefab, randomDoor.transform.position, randomDoor.transform.rotation);
+
+            // Optionally, you can transfer any relevant information or state from the current door to the bonus
+
             // Instantiate the NextStageDoor prefab at the same position and rotation
             GameObject nextStageDoor = Instantiate(nextStageDoorPrefab, randomDoor.transform.position, randomDoor.transform.rotation);
 
@@ -96,4 +109,18 @@ public class EnemySpawnManager : MonoBehaviour
         }
     }
 
+    GameObject GetBonusPrefabByType(int bonusType)
+    {
+        switch (bonusType)
+        {
+            case 1:
+                return attackBuffPrefab; // Add a public GameObject field for attack buff in EnemySpawnManager
+            case 2:
+                return hpBuffPrefab; // Add a public GameObject field for HP buff in EnemySpawnManager
+            case 3:
+                return speedBuffPrefab; // Add a public GameObject field for speed buff in EnemySpawnManager
+            default:
+                return null;
+        }
+    }
 }

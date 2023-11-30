@@ -10,6 +10,8 @@ TagManager:
   - Projectile
   - Wall
   - EnemySpawnDoor
+  - Trap
+  - Boss
   layers:
   - Default
   - TransparentFX

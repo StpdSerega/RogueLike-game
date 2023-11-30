@@ -1,22 +1,18 @@
 using UnityEngine;
 
-public class EnemyHealth : MonoBehaviour
+public class BossHealth : MonoBehaviour
 {
-    public float maxHealth = 25;
-    public int goldValue = 2;
-    private float currentHealth;
+    public float maxHealth = 1500;
+    public int goldValue = 20;
+    public float currentHealth;
 
-    private HealthBar healthBar; 
+    private HealthBar healthBar;
 
     void Start()
     {
         currentHealth = maxHealth;
 
         healthBar = GetComponentInChildren<HealthBar>();
-        if (healthBar == null)
-        {
-            Debug.LogError("EnemyHealthUI component not found!");
-        }
     }
 
     public void TakeDamage(float damage)
@@ -42,13 +38,6 @@ public class EnemyHealth : MonoBehaviour
             playerGoldCounter.AddGold(goldValue);
         }
 
-        EnemySpawnManager enemySpawnManager = FindObjectOfType<EnemySpawnManager>();
-        if (enemySpawnManager != null)
-        {
-            enemySpawnManager.EnemyDied(gameObject);
-        }
-
         Destroy(gameObject);
     }
-
 }

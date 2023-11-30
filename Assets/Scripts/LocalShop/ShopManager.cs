@@ -39,10 +39,10 @@ public class ShopManager : MonoBehaviour
                 playerHealth.IncreaseHealth(1); 
                 break;
             case 2: // Speed Buff
-                playerMovement.IncreaseSpeed(1.0f); 
+                playerMovement.IncreaseSpeed(7f); 
                 break;
             case 3: // Attack Buff
-                playerAttack.IncreaseAttack(1);
+                playerAttack.IncreaseAttack(20f);
                 break;
             default:
                 break;

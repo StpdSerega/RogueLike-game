@@ -3,7 +3,7 @@ using UnityEngine;
 public class PlayerAttack : MonoBehaviour
 {
     public float attackRange = 1f;
-    public int attackDamage = 1;
+    public float attackDamage = 25;
     public LayerMask enemyLayer;
     public float attackCooldown = 0.4f; // Час перезарядки в секундах
 
@@ -75,10 +75,23 @@ public class PlayerAttack : MonoBehaviour
 
         foreach (Collider2D enemy in hitEnemies)
         {
-            EnemyHealth enemyHealth = enemy.GetComponent<EnemyHealth>();
-            if (enemyHealth != null)
+            if (enemy.CompareTag("Boss"))
             {
-                enemyHealth.TakeDamage(attackDamage);
+                // Handle boss attack logic
+                BossHealth bossHealth = enemy.GetComponent<BossHealth>();
+                if (bossHealth != null)
+                {
+                    bossHealth.TakeDamage(attackDamage);
+                }
+            }
+            else
+            {
+                // Handle regular enemy attack logic
+                EnemyHealth enemyHealth = enemy.GetComponent<EnemyHealth>();
+                if (enemyHealth != null)
+                {
+                    enemyHealth.TakeDamage(attackDamage);
+                }
             }
         }
     }
@@ -90,8 +103,8 @@ public class PlayerAttack : MonoBehaviour
         Gizmos.DrawWireSphere(attackPosition, attackRange);
     }
 
-    public void IncreaseAttack(int amount)
+    public void IncreaseAttack(float percentage)
     {
-        attackDamage += amount;
+        attackDamage *= (1 + percentage / 100);
     }
 }

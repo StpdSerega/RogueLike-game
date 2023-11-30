@@ -4,16 +4,18 @@ using UnityEngine;
 
 public class HPBuff : MonoBehaviour
 {
-    public int healthBoost= 1; 
+    public int healthBoost = 1;
+    private bool isUsed = false;
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.CompareTag("Player"))
+        if (!isUsed && other.CompareTag("Player"))
         {
             PlayerHealth playerHealth = other.GetComponent<PlayerHealth>();
             if (playerHealth != null)
             {
                 playerHealth.IncreaseHealth(healthBoost);
+                isUsed = true;
                 Destroy(gameObject); 
             }
         }

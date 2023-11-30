@@ -4,19 +4,20 @@ using UnityEngine;
 
 public class SpeedBuff : MonoBehaviour
 {
-    public float speedBoost = 1.0f;
+    public float speedMultiplier = 13f;
+    private bool isUsed = false;
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.CompareTag("Player"))
+        if (!isUsed && other.CompareTag("Player"))
         {
             PlayerMovement playerMovement = other.GetComponent<PlayerMovement>();
             if (playerMovement != null)
             {
-                playerMovement.IncreaseSpeed(speedBoost);
+                playerMovement.IncreaseSpeed(speedMultiplier);
+                isUsed = true; 
                 Destroy(gameObject);
             }
         }
     }
-
 }

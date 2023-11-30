@@ -176,7 +176,7 @@ BoxCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
@@ -204,7 +204,7 @@ Rigidbody2D:
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 1
-  m_Mass: 1
+  m_Mass: 0.3074207
   m_LinearDrag: 0
   m_AngularDrag: 0.05
   m_GravityScale: 1
@@ -212,7 +212,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 7
+  m_Constraints: 0
 --- !u!114 &1708230225857808906
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -225,12 +225,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9c550f1393414ed4c8f94f0c440ce600, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  moveSpeed: 15
   detectionRange: 10
-  player: {fileID: 48984619347941600, guid: 89036416ee38ec84d87491d36f5e66e3, type: 3}
-  chargeTime: 1
-  attackSpeed: 5
-  reloadTime: 1
-  damage: 1
+  attackRange: 0.8
+  attackDamage: 1
+  rb: {fileID: 3673037967138045555}
+  playerLayer:
+    serializedVersion: 2
+    m_Bits: 8
 --- !u!114 &455488715291931789
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -243,7 +245,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4d7797f83efec75478c090b122d4b042, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 1
+  maxHealth: 25
   goldValue: 1
 --- !u!114 &828843338957783820
 MonoBehaviour:
