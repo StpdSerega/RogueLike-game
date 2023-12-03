@@ -3778,6 +3778,18 @@ PrefabInstance:
       propertyPath: m_Name
       value: BossEnemy1
       objectReference: {fileID: 0}
+    - target: {fileID: 2400807755403326308, guid: fced929e3e2e99c47bdcd63bc423971d, type: 3}
+      propertyPath: m_SortingOrder
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2400807755403326310, guid: fced929e3e2e99c47bdcd63bc423971d, type: 3}
+      propertyPath: damageAreaPrefab
+      value: 
+      objectReference: {fileID: 3186865395278169870, guid: 51b11996c0da11644abd20f73bb3c47f, type: 3}
+    - target: {fileID: 2400807755403326311, guid: fced929e3e2e99c47bdcd63bc423971d, type: 3}
+      propertyPath: m_Mass
+      value: 8.974783
+      objectReference: {fileID: 0}
     - target: {fileID: 2400807755403326315, guid: fced929e3e2e99c47bdcd63bc423971d, type: 3}
       propertyPath: m_RootOrder
       value: 0
@@ -3820,6 +3832,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2400807755403326315, guid: fced929e3e2e99c47bdcd63bc423971d, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2783001212878903377, guid: fced929e3e2e99c47bdcd63bc423971d, type: 3}
+      propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
