@@ -385,7 +385,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8018aafd40fc7ab4a9ba924d9f1cdd95, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  goldCount: 10
+  goldCount: 0
   goldCountText: {fileID: 48984617676014842}
 --- !u!68 &48984618974808475
 EdgeCollider2D:

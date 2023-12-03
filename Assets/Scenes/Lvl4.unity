@@ -933,6 +933,7 @@ MonoBehaviour:
   - {fileID: 1894161995}
   - {fileID: 2142465377}
   - {fileID: 1174615640}
+  maxSpawnedEnemies: 20
 --- !u!4 &255241918
 Transform:
   m_ObjectHideFlags: 0

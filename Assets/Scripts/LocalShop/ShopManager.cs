@@ -20,9 +20,9 @@ public class ShopManager : MonoBehaviour
         shopItems[1, 3] = 3;
 
         //Price
-        shopItems[2, 1] = 5;
-        shopItems[2, 2] = 4;
-        shopItems[2, 3] = 6;
+        shopItems[2, 1] = 50;
+        shopItems[2, 2] = 45;
+        shopItems[2, 3] = 60;
 
         // Initialize playerGoldCounter
         playerGoldCounter = FindObjectOfType<PlayerGoldCounter>();
