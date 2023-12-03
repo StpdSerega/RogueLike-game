@@ -449,12 +449,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 05ec996a6cd01b54b8b40e000ab75a4c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxEnemies: 2
+  maxEnemies: 5
   spawnDelay: 2
   attackBuffPrefab: {fileID: 8383492132263482299, guid: 4f8dec21aa46002439998ecdfad63f08, type: 3}
   hpBuffPrefab: {fileID: 1161069215903976100, guid: b0863c8871c55a14da7f7d593f8014b0, type: 3}
   speedBuffPrefab: {fileID: 1704898430457857139, guid: e4b0dba2c83c19941b104cea05d7032a, type: 3}
-  enemiesNeededForNextStage: 2
+  enemiesNeededForNextStage: 10
   nextStageDoorPrefab: {fileID: 5579508368792732836, guid: bf4e8c422420fef4b969d9eab34a6a84, type: 3}
   enemyPrefabs:
   - {fileID: 4002390292474567071, guid: 3065ab33603c43444893eb77af04fd8e, type: 3}

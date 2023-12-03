@@ -51,9 +51,7 @@ public class PlayerHealth : MonoBehaviour
 
     void RestartGame()
     {
-        int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
-
-        SceneManager.LoadScene(currentSceneIndex);
+        SceneManager.LoadScene("HomeScene");
     }
 
     void UpdateHealthText()

@@ -26,22 +26,25 @@ public class EnemySpawnManager : MonoBehaviour
 
     IEnumerator SpawnEnemies()
     {
-        while (totalEnemiesSpawned < maxEnemies)
+        while (true)
         {
-            // Determine random enemy type to spawn
-            GameObject enemyPrefab = GetRandomEnemyPrefab();
+            if (GameObject.FindGameObjectsWithTag("Enemy").Length < 5)
+            {
+                // Determine random enemy type to spawn
+                GameObject enemyPrefab = GetRandomEnemyPrefab();
 
-            // Determine random spawn point
-            Transform spawnPoint = GetRandomSpawnPoint();
+                // Determine random spawn point
+                Transform spawnPoint = GetRandomSpawnPoint();
 
-            // Spawn the enemy and deactivate it
-            GameObject enemy = Instantiate(enemyPrefab, spawnPoint.position, Quaternion.identity);
-            enemy.SetActive(true);
+                // Spawn the enemy and deactivate it
+                GameObject enemy = Instantiate(enemyPrefab, spawnPoint.position, Quaternion.identity);
+                enemy.SetActive(true);
 
-            // Add the enemy to the list of active enemies
-            activeEnemies.Add(enemy);
+                // Add the enemy to the list of active enemies
+                activeEnemies.Add(enemy);
 
-            totalEnemiesSpawned++;
+                totalEnemiesSpawned++;
+            }
 
             yield return new WaitForSeconds(spawnDelay);
         }
@@ -63,16 +66,9 @@ public class EnemySpawnManager : MonoBehaviour
         activeEnemies.Remove(enemy);
         enemiesDefeated++;
 
-        if (activeEnemies.Count == 0 && totalEnemiesSpawned >= maxEnemies)
+        if (enemiesDefeated == enemiesNeededForNextStage)
         {
-            if (enemiesDefeated >= enemiesNeededForNextStage)
-            {
-                TransformDoorToNextStage();
-            }
-            else
-            {
-                Debug.Log("All enemies defeated! Player rewarded with a buff.");
-            }
+            TransformDoorToNextStage();
         }
     }
 
@@ -114,11 +110,11 @@ public class EnemySpawnManager : MonoBehaviour
         switch (bonusType)
         {
             case 1:
-                return attackBuffPrefab; // Add a public GameObject field for attack buff in EnemySpawnManager
+                return attackBuffPrefab; // Add a public GameObject field for the attack buff in EnemySpawnManager
             case 2:
-                return hpBuffPrefab; // Add a public GameObject field for HP buff in EnemySpawnManager
+                return hpBuffPrefab; // Add a public GameObject field for the HP buff in EnemySpawnManager
             case 3:
-                return speedBuffPrefab; // Add a public GameObject field for speed buff in EnemySpawnManager
+                return speedBuffPrefab; // Add a public GameObject field for the speed buff in EnemySpawnManager
             default:
                 return null;
         }

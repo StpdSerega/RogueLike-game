@@ -9,10 +9,7 @@ public class RangedEnemy : MonoBehaviour
     public Transform firePoint; // Point where projectiles are spawned
 
     private bool isFiring = false;
-
-    void Start()
-    {
-    }
+    private bool isFacingRight = true; // Keep track of the enemy's facing direction
 
     void Update()
     {
@@ -26,9 +23,18 @@ public class RangedEnemy : MonoBehaviour
 
             if (distanceToPlayer <= detectionRange)
             {
-                // Rotate the enemy to face the player
+                // Determine the direction to the player
                 Vector2 direction = (player.transform.position - transform.position).normalized;
-                transform.up = direction;
+
+                // Face the player
+                if (direction.x > 0 && !isFacingRight)
+                {
+                    Flip();
+                }
+                else if (direction.x < 0 && isFacingRight)
+                {
+                    Flip();
+                }
 
                 if (distanceToPlayer <= fireRange && !isFiring)
                 {
@@ -53,7 +59,7 @@ public class RangedEnemy : MonoBehaviour
         Rigidbody2D rb = projectile.GetComponent<Rigidbody2D>();
         if (rb != null)
         {
-            rb.velocity = firePoint.up * 10f; // Adjust the projectile speed as needed
+            rb.velocity = (isFacingRight ? Vector2.right : Vector2.left) * 10f; // Adjust the projectile speed as needed
         }
     }
 
@@ -67,5 +73,14 @@ public class RangedEnemy : MonoBehaviour
                 playerHealth.TakeDamage(1);
             }
         }
+    }
+
+    // Flip the enemy to face the opposite direction
+    private void Flip()
+    {
+        isFacingRight = !isFacingRight;
+        Vector3 scale = transform.localScale;
+        scale.x *= -1;
+        transform.localScale = scale;
     }
 }
