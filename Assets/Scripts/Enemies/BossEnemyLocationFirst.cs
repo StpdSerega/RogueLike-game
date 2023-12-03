@@ -100,7 +100,7 @@ public class BossEnemyLocationFirst : MonoBehaviour
 
     void ShootProjectiles()
     {
-        // Стрільба снарядів
+        // пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
         for (int i = 0; i < projectilesPerSide; i++)
         {
             Invoke("ShootSingleProjectile", i * 0.5f); 
@@ -111,12 +111,12 @@ public class BossEnemyLocationFirst : MonoBehaviour
 
     void ShootSingleProjectile()
     {
-        // Лівий снаряд
+        // ЛіпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
         GameObject leftProjectile = Instantiate(projectile, leftFirePoint.position, Quaternion.identity);
         Rigidbody2D leftRb = leftProjectile.GetComponent<Rigidbody2D>();
         leftRb.velocity = Vector2.left * projectileSpeed;
 
-        // Правий снаряд
+        // пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
         GameObject rightProjectile = Instantiate(projectile, rightFirePoint.position, Quaternion.identity);
         Rigidbody2D rightRb = rightProjectile.GetComponent<Rigidbody2D>();
         rightRb.velocity = Vector2.right * projectileSpeed;
