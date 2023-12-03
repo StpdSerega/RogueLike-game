@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class EnemySpawnManager : MonoBehaviour
 {
@@ -15,9 +16,14 @@ public class EnemySpawnManager : MonoBehaviour
     public GameObject[] enemyPrefabs; // Array of enemy prefabs
     public Transform[] spawnPoints; // Array of spawn points
 
+    public int maxSpawnedEnemies = 10; // Maximum number of enemies to be spawned
+    private int spawnedEnemyCounter = 0;
+
     private int totalEnemiesSpawned = 0;
     private int enemiesDefeated = 0;
     private List<GameObject> activeEnemies = new List<GameObject>();
+
+    private bool spawningEnabled = true; // Flag to enable or disable spawning
 
     void Start()
     {
@@ -26,7 +32,7 @@ public class EnemySpawnManager : MonoBehaviour
 
     IEnumerator SpawnEnemies()
     {
-        while (true)
+        while (spawningEnabled && spawnedEnemyCounter < maxSpawnedEnemies)
         {
             if (GameObject.FindGameObjectsWithTag("Enemy").Length < 5)
             {
@@ -44,6 +50,7 @@ public class EnemySpawnManager : MonoBehaviour
                 activeEnemies.Add(enemy);
 
                 totalEnemiesSpawned++;
+                spawnedEnemyCounter++;
             }
 
             yield return new WaitForSeconds(spawnDelay);
@@ -95,9 +102,9 @@ public class EnemySpawnManager : MonoBehaviour
             GameObject nextStageDoor = Instantiate(nextStageDoorPrefab, randomDoor.transform.position, randomDoor.transform.rotation);
 
             // Optionally, you can transfer any relevant information or state from the current door to the next stage door
-
             // Destroy the current door
             Destroy(randomDoor);
+            spawningEnabled = false;
         }
         else
         {
