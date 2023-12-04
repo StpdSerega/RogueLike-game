@@ -5,29 +5,28 @@ public class PlayerAttack : MonoBehaviour
     public float attackRange = 1f;
     public float attackDamage = 25;
     public LayerMask enemyLayer;
-    public float attackCooldown = 0.4f; // Час перезарядки в секундах
+    public float attackCooldown = 0.4f;
+    public GameObject attackSpritePrefab; 
 
-    private Vector2 lastMoveDirection = Vector2.right; 
-    private float lastAttackTime; // Час останньої атаки
+    private Vector2 lastMoveDirection = Vector2.right;
+    private float lastAttackTime;
 
     void Update()
     {
-        // Детектувати позицію миші в світових координатах
         Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 
-        // Розрахувати напрямок від гравця до позиції миші
         Vector2 directionToMouse = mousePosition - (Vector2)transform.position;
         directionToMouse.Normalize();
 
-        // Визначити напрямок атаки на основі кута
         float angle = Vector2.SignedAngle(Vector2.right, directionToMouse);
         lastMoveDirection = GetDirectionFromAngle(angle);
 
-        // Перевірка перезарядки атаки
         if (Input.GetKeyDown(KeyCode.Mouse0) && Time.time - lastAttackTime > attackCooldown)
         {
             PerformMeleeAttack();
-            lastAttackTime = Time.time; // Запам'ятати час останньої атаки
+            Vector2 attackPosition = (Vector2)transform.position + lastMoveDirection * attackRange;
+            ShowAttackSprite(attackPosition, lastMoveDirection); 
+            lastAttackTime = Time.time;
         }
     }
 
@@ -69,7 +68,6 @@ public class PlayerAttack : MonoBehaviour
 
     void PerformMeleeAttack()
     {
-        // Calculate attack area based on the last movement direction
         Vector2 attackPosition = (Vector2)transform.position + lastMoveDirection * attackRange;
         Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(attackPosition, attackRange, enemyLayer);
 
@@ -77,7 +75,6 @@ public class PlayerAttack : MonoBehaviour
         {
             if (enemy.CompareTag("Boss"))
             {
-                // Handle boss attack logic
                 BossHealth bossHealth = enemy.GetComponent<BossHealth>();
                 if (bossHealth != null)
                 {
@@ -86,7 +83,6 @@ public class PlayerAttack : MonoBehaviour
             }
             else
             {
-                // Handle regular enemy attack logic
                 EnemyHealth enemyHealth = enemy.GetComponent<EnemyHealth>();
                 if (enemyHealth != null)
                 {
@@ -94,6 +90,18 @@ public class PlayerAttack : MonoBehaviour
                 }
             }
         }
+    }
+
+    void ShowAttackSprite(Vector2 attackPosition, Vector2 attackDirection)
+    {
+        GameObject attackSprite = Instantiate(attackSpritePrefab, attackPosition, Quaternion.identity);
+
+        SpriteRenderer spriteRenderer = attackSprite.GetComponent<SpriteRenderer>();
+
+        float angle = Vector2.SignedAngle(Vector2.right, attackDirection);
+        spriteRenderer.transform.rotation = Quaternion.Euler(0f, 0f, angle);
+
+        Destroy(attackSprite, 0.3f);
     }
 
     void OnDrawGizmosSelected()

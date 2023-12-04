@@ -48,6 +48,15 @@ public class BossEnemyLocationFirst : MonoBehaviour
             {
                 Vector2 direction = (player.transform.position - transform.position).normalized;
                 rb.velocity = new Vector2(direction.x * moveSpeed, rb.velocity.y);
+
+                if (direction.x > 0)
+                {
+                    transform.localScale = new Vector3(1.468793f, 1.844278f, 3.577594f);
+                }
+                else if (direction.x < 0)
+                {
+                    transform.localScale = new Vector3(-1.468793f, 1.844278f, 3.577594f);
+                }
             }
             else
             {
@@ -94,7 +103,7 @@ public class BossEnemyLocationFirst : MonoBehaviour
     {
         rb.velocity = Vector2.zero;
 
-        rb.AddForce(Vector2.up * 140f, ForceMode2D.Impulse);
+        rb.AddForce(Vector2.up * 50f, ForceMode2D.Impulse);
         isJumping = true;
         lastJumpTime = Time.time;
     }
@@ -142,12 +151,12 @@ public class BossEnemyLocationFirst : MonoBehaviour
     {
         float enemyHeight = GetComponent<SpriteRenderer>().bounds.size.y;
 
-        GameObject damageArea = Instantiate(damageAreaPrefab, transform.position - new Vector3(0f, enemyHeight / 2f, 0f), Quaternion.identity);
+        GameObject damageArea = Instantiate(damageAreaPrefab, transform.position - new Vector3(0f, enemyHeight / 2.1f, 0f), Quaternion.identity);
 
         DamageArea damageAreaScript = damageArea.GetComponent<DamageArea>();
         if (damageAreaScript != null)
         {
-            damageAreaScript.StartDestroyTimer(1f);
+            damageAreaScript.StartDestroyTimer(0.5f);
         }
     }
 
